@@ -4,6 +4,7 @@ Language Features:
  * General: Support ``pop()`` for storage arrays.
 
 Breaking Changes:
+ * ABI Encoder: Properly pad data from calldata (``msg.data`` and external function parameters). Use ``abi.encodePacked`` for unpadded encoding.
  * Disallow conversions between bytesX and uintY of different size.
  * Commandline interface: Require ``-`` if standard input is used as source.
  * General: New keywords: ``calldata``
