@@ -5,13 +5,14 @@ contract C {
     T t;
     enum A { X, Y }
     function f() public pure {
-        bool a = address(this).delegatecall(S, A, A.X, T, uint, uint[]);
+        bytes memory a = abi.encodePacked(S, A, A.X, T, uint, uint[]);
+        a;
     }
 }
 // ----
 // Warning: (51-63): Defining empty structs is deprecated.
-// TypeError: (168-169): This type cannot be encoded.
-// TypeError: (171-172): This type cannot be encoded.
-// TypeError: (179-180): This type cannot be encoded.
-// TypeError: (182-186): This type cannot be encoded.
-// TypeError: (188-194): This type cannot be encoded.
+// TypeError: (166-167): This type cannot be encoded.
+// TypeError: (169-170): This type cannot be encoded.
+// TypeError: (177-178): This type cannot be encoded.
+// TypeError: (180-184): This type cannot be encoded.
+// TypeError: (186-192): This type cannot be encoded.
