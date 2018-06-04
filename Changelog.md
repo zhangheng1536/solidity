@@ -11,6 +11,7 @@ Breaking Changes:
  * Type Checker: Disallow arithmetic operations for Boolean variables.
  * Disallow trailing dots that are not followed by a number.
  * Remove assembly instructions ``sha3`` and ``suicide``
+ * Code generator: revert if calldata is too short or points out of bounds. This is done inside the ``ABI decoder`` and therefore also applies to ``abi.decode()``.
 
 Language Features:
  * General: Allow appending ``calldata`` keyword to types, to explicitly specify data location for arguments of external functions.
