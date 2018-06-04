@@ -6,6 +6,6 @@ contract test {
     }
 }
 // ----
-// Warning: (49-55): Naming function type parameters is deprecated.
-// Warning: (57-63): Naming function type parameters is deprecated.
-// Warning: (83-89): Naming function type return parameters is deprecated.
+// SyntaxError: (49-55): Arguments in function types may not be named.
+// SyntaxError: (57-63): Arguments in function types may not be named.
+// SyntaxError: (83-89): Return parameters in function types may not be named.

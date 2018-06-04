@@ -251,11 +251,11 @@ bool SyntaxChecker::visit(FunctionTypeName const& _node)
 {
 	for (auto const& decl: _node.parameterTypeList()->parameters())
 		if (!decl->name().empty())
-			m_errorReporter.warning(decl->location(), "Naming function type parameters is deprecated.");
+			m_errorReporter.syntaxError(decl->location(), "Arguments in function types may not be named.");
 
 	for (auto const& decl: _node.returnParameterTypeList()->parameters())
 		if (!decl->name().empty())
-			m_errorReporter.warning(decl->location(), "Naming function type return parameters is deprecated.");
+			m_errorReporter.syntaxError(decl->location(), "Return parameters in function types may not be named.");
 
 	return true;
 }

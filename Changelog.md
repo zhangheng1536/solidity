@@ -9,6 +9,7 @@ Breaking Changes:
  * General: New keywords: ``calldata``
  * General: ``continue`` in a ``do...while`` loop jumps to the condition (it used to jump to the loop body). Warning: this may silently change the semantics of existing code.
  * Type Checker: Disallow arithmetic operations for Boolean variables.
+ * Syntax Checker: Named arguments and return values in function types are an error.
  * Disallow trailing dots that are not followed by a number.
 
 Language Features:
