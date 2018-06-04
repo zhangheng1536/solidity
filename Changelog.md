@@ -19,7 +19,7 @@ Breaking changes already present in earlier releases as "experimental 0.5.0" (so
  * Type Checker: Make ``keccak256``, ``sha256`` and ``ripemd160`` require a single bytes argument (use ``abi.encodePacked(...)``).
  * Type Checker: Enforce ``view`` and ``pure``.
  * Code Generator: Use ``STATICCALL`` opcode for calling ``view`` and ``pure`` functions.
- * Code Generator: Assert that ``k != 0`` for ``mulmod(a, b, k)`` and ``addmod(a, b, k)`.
+ * Code Generator: Assert that ``k != 0`` for ``mulmod(a, b, k)`` and ``addmod(a, b, k)``.
  * Inline Assembly: Enforce strict mode (no jumps, to direct stack manipulations).
  * Type Checker: Interface functions have to be external.
  * Type Checker: Local variables of reference type require ``storage`` or ``memory`` keyword.
