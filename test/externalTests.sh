@@ -56,5 +56,6 @@ function test_truffle
     rm -rf "$DIR"
 }
 
+test_truffle dYdX https://github.com/dydxprotocol/protocol.git
 test_truffle Gnosis https://github.com/gnosis/gnosis-contracts.git
 test_truffle Zeppelin https://github.com/OpenZeppelin/zeppelin-solidity.git
