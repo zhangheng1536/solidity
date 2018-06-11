@@ -712,8 +712,8 @@ void DeclarationRegistrationHelper::registerDeclaration(Declaration& _declaratio
 	)
 		warnAboutShadowing = false;
 	// Do not warn about the constructor shadowing the contract.
-	if (auto fun = dynamic_cast<FunctionDefinition const*>(&_declaration))
-		if (fun->isConstructor())
+	if (auto function = dynamic_cast<FunctionDefinition const*>(&_declaration))
+		if (function->isConstructor() || dynamic_cast<ContractDefinition const*>(m_currentScope))
 			warnAboutShadowing = false;
 
 	// Register declaration as inactive if we are in block scope and C99 mode.
