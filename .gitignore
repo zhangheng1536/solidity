@@ -31,7 +31,6 @@ prerelease.txt
 *.app
 
 # Build directory
-build/
 docs/_build
 docs/utils/__pycache__
 docs/utils/*.pyc
