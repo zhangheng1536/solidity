@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(cleanup)
 				"f(uint16,int16,address,bytes3,bool)",
 				u256(0xffffff), u256(0x1ffff), u256(-1), string("abcd"), u256(4)
 			),
-			encodeArgs(u256(0xffff), u256(-1), (u256(1) << 160) - 1, string("abc"), true)
+			encodeArgs(u256(0xffff), u256(-1), (u256(1) << 168) - 1, string("abc"), true)
 		);
 	)
 }

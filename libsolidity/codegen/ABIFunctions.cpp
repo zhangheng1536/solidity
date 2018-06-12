@@ -322,7 +322,7 @@ string ABIFunctions::conversionFunction(Type const& _from, Type const& _to)
 					toCategory == Type::Category::Integer ||
 					toCategory == Type::Category::Contract,
 				"");
-				IntegerType const addressType(160, IntegerType::Modifier::Address);
+				IntegerType const addressType(168, IntegerType::Modifier::Address);
 				IntegerType const& to =
 					toCategory == Type::Category::Integer ?
 					dynamic_cast<IntegerType const&>(_to) :

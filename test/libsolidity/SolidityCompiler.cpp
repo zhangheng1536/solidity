@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(does_not_include_creation_time_only_internal_functions)
 	bytes const& creationBytecode = m_compiler.object("C").bytecode;
 	bytes const& runtimeBytecode = m_compiler.runtimeObject("C").bytecode;
 	BOOST_CHECK(creationBytecode.size() >= 130);
-	BOOST_CHECK(creationBytecode.size() <= 160);
+	BOOST_CHECK(creationBytecode.size() <= 168);
 	BOOST_CHECK(runtimeBytecode.size() >= 50);
 	BOOST_CHECK(runtimeBytecode.size() <= 70);
 }
