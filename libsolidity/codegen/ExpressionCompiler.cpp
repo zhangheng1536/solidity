@@ -1738,7 +1738,7 @@ void ExpressionCompiler::appendShiftOperatorCode(Token::Value _operator, Type co
 		break;
 	case Token::SAR:
 		if (m_context.evmVersion().hasBitwiseShifting())
-			m_context << Instruction::SAR;
+			m_context << (c_valueSigned ? Instruction::SAR : Instruction::SHR);
 		else
 		{
 			if (c_valueSigned)
