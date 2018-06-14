@@ -1228,7 +1228,7 @@ bool ExpressionCompiler::visit(MemberAccess const& _memberAccess)
 						identifier = FunctionType(*function).externalIdentifier();
 					else
 						solAssert(false, "Contract member is neither variable nor function.");
-					utils().convertType(type, IntegerType(160, IntegerType::Modifier::Address), true);
+					utils().convertType(type, IntegerType(168, IntegerType::Modifier::Address), true);
 					m_context << identifier;
 				}
 				else
@@ -1245,7 +1245,7 @@ bool ExpressionCompiler::visit(MemberAccess const& _memberAccess)
 			{
 				utils().convertType(
 					*_memberAccess.expression().annotation().type,
-					IntegerType(160, IntegerType::Modifier::Address),
+					IntegerType(168, IntegerType::Modifier::Address),
 					true
 				);
 				m_context << Instruction::BALANCE;
@@ -1253,7 +1253,7 @@ bool ExpressionCompiler::visit(MemberAccess const& _memberAccess)
 			else if ((set<string>{"send", "transfer", "call", "callcode", "delegatecall"}).count(member))
 				utils().convertType(
 					*_memberAccess.expression().annotation().type,
-					IntegerType(160, IntegerType::Modifier::Address),
+					IntegerType(168, IntegerType::Modifier::Address),
 					true
 				);
 			else
@@ -1737,11 +1737,36 @@ void ExpressionCompiler::appendShiftOperatorCode(Token::Value _operator, Type co
 			m_context << u256(2) << Instruction::EXP << Instruction::MUL;
 		break;
 	case Token::SAR:
-		// NOTE: SAR rounds differently than SDIV
-		if (m_context.evmVersion().hasBitwiseShifting() && !c_valueSigned)
-			m_context << Instruction::SHR;
+		if (m_context.evmVersion().hasBitwiseShifting())
+			m_context << (c_valueSigned ? Instruction::SAR : Instruction::SHR);
 		else
-			m_context << u256(2) << Instruction::EXP << Instruction::SWAP1 << (c_valueSigned ? Instruction::SDIV : Instruction::DIV);
+		{
+			if (c_valueSigned)
+				// In the following assembly snippet, xor_mask will be zero, if value_to_shift is positive.
+				// Therefor xor'ing with xor_mask is the identity and the computation reduces to
+				// div(value_to_shift, exp(2, shift_amount)), which is correct, since for positive values
+				// arithmetic right shift is dividing by a power of two (which, as a bitwise operation, results
+				// in discarding bits on the right and filling with zeros from the left).
+				// For negative values arithmetic right shift, viewed as a bitwise operation, discards bits to the
+				// right and fills in ones from the left. This is achieved as follows:
+				// If value_to_shift is negative, then xor_mask will have all bits set, so xor'ing with xor_mask
+				// will flip all bits. First all bits in value_to_shift are flipped. As for the positive case,
+				// dividing by a power of two using integer arithmetic results in discarding bits to the right
+				// and filling with zeros from the left. Flipping all bits in the result again, turns all zeros
+				// on the left to ones and restores the non-discarded, shifted bits to their original value (they
+				// have now been flipped twice). In summary we now have discarded bits to the right and filled with
+				// ones from the left, i.e. we have performed an arithmetic right shift.
+				m_context.appendInlineAssembly(R"({
+					let xor_mask := sub(0, slt(value_to_shift, 0))
+					value_to_shift := xor(div(xor(value_to_shift, xor_mask), exp(2, shift_amount)), xor_mask)
+				})", {"value_to_shift", "shift_amount"});
+			else
+				m_context.appendInlineAssembly(R"({
+					value_to_shift := div(value_to_shift, exp(2, shift_amount))
+				})", {"value_to_shift", "shift_amount"});
+			m_context << Instruction::POP;
+
+		}
 		break;
 	case Token::SHR:
 	default:
@@ -1994,8 +2019,8 @@ void ExpressionCompiler::appendExternalFunctionCall(
 	{
 		// fix: built-in contract returns right-aligned data
 		utils().fetchFreeMemoryPointer();
-		utils().loadFromMemoryDynamic(IntegerType(160), false, true, false);
-		utils().convertType(IntegerType(160), FixedBytesType(20));
+		utils().loadFromMemoryDynamic(IntegerType(168), false, true, false);
+		utils().convertType(IntegerType(168), FixedBytesType(21));
 	}
 	else if (funKind == FunctionType::Kind::ECRecover)
 	{
